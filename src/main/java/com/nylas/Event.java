@@ -157,6 +157,32 @@ public class Event extends AccountOwnedModel implements JsonObject {
 		this.recurrence = recurrence;
 	}
 
+	/**
+	 * Convenience method to add a metadata pair to an event.
+	 *
+	 * @return true if the metadata was newly added, and false if overwriteIfExists is false the metadata key already exists
+	 */
+	public boolean addMetadata(String key, String value, boolean overwriteIfExists) {
+		if(!overwriteIfExists && metadata.containsKey(key)) {
+			return false;
+		}
+		metadata.put(key, value);
+		return true;
+	}
+
+	public boolean addMetadata(String key, String value) {
+		return addMetadata(key, value, true);
+	}
+
+	/**
+	 * Convenience method to remove a metadata pair from an event.
+	 *
+	 * @return true if the metadata pair was removed, and false if the event did not have the metadata key
+	 */
+	public boolean removeMetadata(String key) {
+		return metadata.remove(key) != null;
+	}
+
 	@Override
 	Map<String, Object> getWritableFields(boolean creation) {
 		Map<String, Object> params = new HashMap<>();
